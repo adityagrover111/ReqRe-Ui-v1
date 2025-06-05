@@ -324,7 +324,49 @@
         font-size: 0.9rem;
         font-weight: 500;
       }
+      /* About Section */
+      .about-section {
+        background: #f8f9fa;
+        padding: 80px 0;
+        color: #333;
+      }
 
+      .about-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .about-content h3 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+        color: #1e88e5;
+        font-weight: 300;
+      }
+
+      .about-text {
+        text-align: left;
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .about-text p {
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+        line-height: 1.8;
+      }
+
+      @media (max-width: 768px) {
+        .about-text {
+          padding: 30px 20px;
+        }
+
+        .about-content h3 {
+          font-size: 1.8rem;
+        }
+      }
       /* Navigation */
       .page-nav {
         position: fixed;
@@ -412,7 +454,9 @@
     <header>
       <div class="container">
         <div class="header-content">
-          <div class="logo">re<span class="q">Q</span>ru</div>
+          <div class="logo" onclick="goToHome()" style="cursor: pointer">
+            re<span class="q">Q</span>ru
+          </div>
           <div class="header-actions">
             <a href="#" class="language-selector"> 🇺🇸 English ▼ </a>
             <a href="#" class="btn btn-primary">Create Job Alert</a>
@@ -576,9 +620,32 @@
       <div class="job-detail">
         <div class="job-header">
           <div class="container">
-            <h1>Lead Python Automation Engineer</h1>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+              "
+            >
+              <button
+                onclick="goToHome()"
+                class="btn"
+                style="
+                  background: rgba(255, 255, 255, 0.2);
+                  color: white;
+                  border: 1px solid rgba(255, 255, 255, 0.3);
+                "
+              >
+                ← Back to Jobs
+              </button>
+            </div>
+            <h1 id="job-detail-title">Lead Python Automation Engineer</h1>
             <div class="breadcrumb">
-              Job Openings » Lead Python Automation Engineer
+              Job Openings »
+              <span id="job-detail-breadcrumb"
+                >Lead Python Automation Engineer</span
+              >
             </div>
           </div>
         </div>
@@ -586,29 +653,34 @@
         <div class="container">
           <div class="job-content">
             <div class="job-description">
-              <h2>Lead Python Automation Engineer</h2>
+              <h2 id="job-desc-title">Lead Python Automation Engineer</h2>
 
-              <div class="skills-container">
+              <div class="skills-container" id="job-skills">
                 <span class="skill-tag">Automation Testing</span>
               </div>
 
               <h3>Job Description</h3>
-              <p>
-                TechStar was started in the year 2002 with the vision of
-                providing high quality services for customers in Application
-                Development, Business Intelligence and Data warehousing
-                solutions. TechStar Consulting Inc. Provides business and
-                technology convergence solutions through IT consulting and
-                services to clients globally, to help them formulate and
-                implement business transformations. Our client focused; highly
-                collaborative work approach ensures optimal solutions in the
-                shortest possible time. TechStar is a world-class company that
-                provides cutting-edge technology solutions and consulting
-                services to Fortune 500 companies.
-              </p>
+              <div id="job-description-content">
+                <p>
+                  TechStar was started in the year 2002 with the vision of
+                  providing high quality services for customers in Application
+                  Development, Business Intelligence and Data warehousing
+                  solutions. TechStar Consulting Inc. Provides business and
+                  technology convergence solutions through IT consulting and
+                  services to clients globally, to help them formulate and
+                  implement business transformations. Our client focused; highly
+                  collaborative work approach ensures optimal solutions in the
+                  shortest possible time. TechStar is a world-class company that
+                  provides cutting-edge technology solutions and consulting
+                  services to Fortune 500 companies.
+                </p>
+              </div>
 
               <h3>Requirements</h3>
-              <ul style="margin: 20px 0; padding-left: 20px">
+              <ul
+                id="job-requirements"
+                style="margin: 20px 0; padding-left: 20px"
+              >
                 <li>5+ years of experience in Python automation</li>
                 <li>Strong knowledge of automation frameworks</li>
                 <li>Experience with CI/CD pipelines</li>
@@ -617,7 +689,10 @@
               </ul>
 
               <h3>Responsibilities</h3>
-              <ul style="margin: 20px 0; padding-left: 20px">
+              <ul
+                id="job-responsibilities"
+                style="margin: 20px 0; padding-left: 20px"
+              >
                 <li>Lead automation testing initiatives</li>
                 <li>Design and implement test automation frameworks</li>
                 <li>Mentor junior team members</li>
@@ -629,26 +704,61 @@
             <div class="job-sidebar">
               <div class="sidebar-card">
                 <h3>Posted By</h3>
-                <p>TechStar Consulting Inc.</p>
+                <p id="job-client">TechStar Consulting Inc.</p>
               </div>
 
               <div class="sidebar-card">
                 <h3>Job Locations</h3>
-                <p>📍 Hyderabad</p>
+                <p id="job-location">📍 Hyderabad</p>
               </div>
 
               <div class="sidebar-card">
                 <h3>Job Category</h3>
-                <p>Testers</p>
+                <p id="job-category">Testers</p>
               </div>
 
               <div class="sidebar-card">
                 <h3>Apply Now</h3>
-                <button class="btn btn-primary" style="width: 100%">
+                <button
+                  class="btn btn-primary"
+                  style="width: 100%"
+                  onclick="applyForJob()"
+                >
                   Apply for this Job
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+      <div class="container">
+        <h2 class="section-title">About</h2>
+        <div class="about-content">
+          <h3>Welcome to ReQru</h3>
+          <div class="about-text">
+            <p>
+              Your innovative recruitment solution built to streamline, analyze,
+              and enhance the entire hiring process. At ReQru, we understand
+              that modern recruitment is more than just filling positions; it's
+              about finding the right talent quickly, ensuring productivity, and
+              delivering insightful analytics for strategic growth.
+            </p>
+            <p>
+              Our platform provides a seamless interface for tracking
+              productivity, managing requirements, and monitoring closures, all
+              designed to empower teams with actionable insights. With ReQru,
+              organizations can achieve faster hiring cycles, data-driven
+              decision-making, and an unparalleled user experience, making
+              talent acquisition more efficient and insightful.
+            </p>
+            <p>
+              Join us as we redefine recruitment and help you build a workforce
+              that drives success.
+            </p>
           </div>
         </div>
       </div>
@@ -687,63 +797,166 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      // Job data
+      // Job data with detailed information
       const jobsData = [
         {
           id: "python-developer",
           title: "Python Developer",
           location: "Hyderabad",
           category: "Software Development",
-          client: "TechStar",
-          skills: ["python"],
+          client: "TechStar Consulting Inc.",
+          skills: ["python", "django", "flask"],
           categoryClass: "software-development",
+          description:
+            "We are looking for a skilled Python Developer to join our dynamic team. You will be responsible for developing and maintaining web applications using Python frameworks.",
+          requirements: [
+            "3+ years of experience in Python development",
+            "Strong knowledge of Django/Flask frameworks",
+            "Experience with RESTful APIs",
+            "Knowledge of databases (PostgreSQL, MySQL)",
+            "Familiarity with version control systems (Git)",
+          ],
+          responsibilities: [
+            "Develop and maintain Python applications",
+            "Write clean, maintainable code",
+            "Collaborate with cross-functional teams",
+            "Participate in code reviews",
+            "Debug and troubleshoot applications",
+          ],
         },
         {
           id: "lead-automation-engineer",
           title: "Lead Python Automation Engineer",
           location: "Hyderabad",
           category: "Testers",
-          client: "TechStar",
-          skills: ["python", "automation"],
+          client: "TechStar Consulting Inc.",
+          skills: ["python", "automation", "selenium"],
           categoryClass: "testing",
+          description:
+            "TechStar was started in the year 2002 with the vision of providing high quality services for customers in Application Development, Business Intelligence and Data warehousing solutions. We are seeking an experienced Lead Python Automation Engineer to drive our testing initiatives.",
+          requirements: [
+            "5+ years of experience in Python automation",
+            "Strong knowledge of automation frameworks",
+            "Experience with CI/CD pipelines",
+            "Excellent problem-solving skills",
+            "Team leadership experience",
+          ],
+          responsibilities: [
+            "Lead automation testing initiatives",
+            "Design and implement test automation frameworks",
+            "Mentor junior team members",
+            "Collaborate with development teams",
+            "Ensure quality standards are met",
+          ],
         },
         {
           id: "qa-automation",
           title: "QA Automation With NMS EMS",
           location: "Hyderabad",
           category: "Testers",
-          client: "TechStar",
-          skills: ["automation"],
+          client: "TechStar Consulting Inc.",
+          skills: ["automation", "nms", "ems"],
           categoryClass: "testing",
+          description:
+            "Join our QA team to work on Network Management Systems (NMS) and Element Management Systems (EMS) automation testing.",
+          requirements: [
+            "3+ years of QA automation experience",
+            "Knowledge of NMS/EMS systems",
+            "Experience with test automation tools",
+            "Strong analytical skills",
+            "Experience with networking protocols",
+          ],
+          responsibilities: [
+            "Develop automated test scripts for NMS/EMS",
+            "Execute test cases and report defects",
+            "Maintain test automation frameworks",
+            "Collaborate with development teams",
+            "Ensure system reliability and performance",
+          ],
         },
         {
           id: "fraud-detection",
           title: "Fraud Detection Analyst - (1-5 Years)",
           location: "Hyderabad",
           category: "Software Development",
-          client: "TechStar",
-          skills: ["python", "data-analysis"],
+          client: "TechStar Consulting Inc.",
+          skills: ["python", "data-analysis", "machine-learning"],
           categoryClass: "software-development",
+          description:
+            "We are seeking a Fraud Detection Analyst to develop and maintain systems that identify and prevent fraudulent activities.",
+          requirements: [
+            "1-5 years of experience in fraud detection",
+            "Strong analytical and problem-solving skills",
+            "Knowledge of machine learning algorithms",
+            "Experience with Python and data analysis tools",
+            "Understanding of financial systems",
+          ],
+          responsibilities: [
+            "Analyze transaction patterns to identify fraud",
+            "Develop fraud detection models",
+            "Monitor system alerts and investigate cases",
+            "Collaborate with compliance teams",
+            "Prepare fraud reports and documentation",
+          ],
         },
         {
           id: "dotnet-developer",
           title: "Dotnet Full Stack Developer (Rabbit MQ)",
           location: "Hyderabad",
           category: "Software Development",
-          client: "Microsoft",
-          skills: ["dotnet", "rabbitmq"],
+          client: "Microsoft Solutions Inc.",
+          skills: ["dotnet", "rabbitmq", "angular"],
           categoryClass: "software-development",
+          description:
+            "We are looking for a skilled .NET Full Stack Developer with experience in RabbitMQ messaging systems.",
+          requirements: [
+            "4+ years of .NET development experience",
+            "Experience with RabbitMQ messaging",
+            "Knowledge of Angular/React frontend frameworks",
+            "Strong understanding of web services and APIs",
+            "Experience with SQL Server databases",
+          ],
+          responsibilities: [
+            "Develop full-stack applications using .NET",
+            "Implement messaging systems with RabbitMQ",
+            "Create responsive frontend interfaces",
+            "Design and optimize database structures",
+            "Ensure application security and performance",
+          ],
         },
         {
           id: "scm-functional",
           title: "D365F&O SCM Functional...(7-10 Years)",
           location: "Hyderabad",
           category: "Software Development",
-          client: "Microsoft",
-          skills: ["d365"],
+          client: "Microsoft Solutions Inc.",
+          skills: ["d365", "scm", "erp"],
           categoryClass: "software-development",
+          description:
+            "We are seeking an experienced D365 Finance & Operations SCM Functional consultant to lead supply chain management implementations.",
+          requirements: [
+            "7-10 years of D365 F&O SCM experience",
+            "Strong knowledge of supply chain processes",
+            "Experience in ERP implementations",
+            "Excellent client communication skills",
+            "Certification in D365 F&O preferred",
+          ],
+          responsibilities: [
+            "Lead SCM module implementations",
+            "Configure D365 F&O SCM modules",
+            "Provide functional expertise to clients",
+            "Conduct user training sessions",
+            "Support go-live and post-implementation activities",
+          ],
         },
       ];
+
+      // Navigation functions
+      function goToHome() {
+        showPage("home");
+        // Hide job results when returning to home
+        document.getElementById("job-results").classList.add("hidden");
+      }
 
       // Search and filter jobs
       function searchJobs() {
@@ -829,9 +1042,62 @@
         });
       }
 
-      // Show job detail
+      // Show job detail with dynamic content
       function showJobDetail(jobId) {
+        const job = jobsData.find((j) => j.id === jobId);
+        if (!job) return;
+
+        // Update job detail content
+        document.getElementById("job-detail-title").textContent = job.title;
+        document.getElementById("job-detail-breadcrumb").textContent =
+          job.title;
+        document.getElementById("job-desc-title").textContent = job.title;
+        document.getElementById("job-client").textContent = job.client;
+        document.getElementById(
+          "job-location"
+        ).textContent = `📍 ${job.location}`;
+        document.getElementById("job-category").textContent = job.category;
+
+        // Update skills
+        const skillsContainer = document.getElementById("job-skills");
+        skillsContainer.innerHTML = job.skills
+          .map(
+            (skill) =>
+              `<span class="skill-tag">${
+                skill.charAt(0).toUpperCase() + skill.slice(1)
+              }</span>`
+          )
+          .join("");
+
+        // Update description
+        document.getElementById(
+          "job-description-content"
+        ).innerHTML = `<p>${job.description}</p>`;
+
+        // Update requirements
+        const requirementsContainer =
+          document.getElementById("job-requirements");
+        requirementsContainer.innerHTML = job.requirements
+          .map((req) => `<li>${req}</li>`)
+          .join("");
+
+        // Update responsibilities
+        const responsibilitiesContainer = document.getElementById(
+          "job-responsibilities"
+        );
+        responsibilitiesContainer.innerHTML = job.responsibilities
+          .map((resp) => `<li>${resp}</li>`)
+          .join("");
+
+        // Show the job detail page
         showPage("job-detail");
+      }
+
+      // Apply for job function
+      function applyForJob() {
+        alert(
+          "Application submitted! You would typically be redirected to an application form or login page."
+        );
       }
 
       // Load more jobs
