@@ -426,6 +426,165 @@
           display: none;
         }
       }
+      /* Mobile-first base styles */
+      @media (max-width: 767px) {
+        /* Header adjustments */
+        .header-content {
+          flex-direction: column;
+          gap: 15px;
+          padding: 10px 0;
+        }
+
+        .logo {
+          font-size: 28px;
+        }
+
+        .header-actions {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .btn {
+          padding: 10px 15px;
+          font-size: 14px;
+        }
+
+        /* Hero section */
+        .hero {
+          margin-top: 120px; /* More space for stacked header */
+          padding: 20px 0;
+        }
+
+        .hero-content h1 {
+          font-size: 2rem;
+          margin-bottom: 15px;
+        }
+
+        .hero-content p {
+          font-size: 1.1rem;
+          margin-bottom: 30px;
+        }
+
+        /* Search form */
+        .search-container {
+          padding: 20px;
+          margin-top: 20px;
+        }
+
+        .search-form {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+
+        /* Job listings */
+        .jobs-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .job-card {
+          padding: 20px;
+        }
+
+        .job-meta {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+
+        /* Job detail page */
+        .job-header {
+          padding: 40px 0;
+        }
+
+        .job-header h1 {
+          font-size: 1.8rem;
+        }
+
+        .job-content {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .job-description,
+        .sidebar-card {
+          padding: 20px;
+        }
+
+        /* About section */
+        .about-text {
+          padding: 20px;
+        }
+
+        .about-content h3 {
+          font-size: 1.5rem;
+        }
+      }
+
+      /* Tablet styles (768px - 1024px) */
+      @media (min-width: 768px) and (max-width: 1024px) {
+        .jobs-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .search-form {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .job-content {
+          grid-template-columns: 1.5fr 1fr;
+        }
+      }
+
+      /* Larger mobile devices (landscape) */
+      @media (max-width: 767px) and (orientation: landscape) {
+        .hero {
+          min-height: auto;
+          padding: 40px 0;
+        }
+      }
+
+      /* Very small devices (under 360px) */
+      @media (max-width: 359px) {
+        .logo {
+          font-size: 24px;
+        }
+
+        .hero-content h1 {
+          font-size: 1.8rem;
+        }
+
+        .btn {
+          padding: 8px 12px;
+          font-size: 12px;
+        }
+      }
+
+      /* Accessibility improvements for touch devices */
+      @media (hover: none) {
+        .job-card:hover {
+          transform: none;
+          box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+          border-color: transparent;
+        }
+
+        .btn:hover,
+        .search-btn:hover {
+          transform: none;
+        }
+
+        .job-card {
+          border: 2px solid #e0e0e0; /* Add border for better visibility */
+        }
+      }
+
+      /* Prevent zoom on form inputs on mobile */
+      @media (max-width: 767px) {
+        select,
+        input {
+          font-size: 16px !important;
+        }
+      }
 
       /* Animations */
       @keyframes fadeInUp {
@@ -446,6 +605,39 @@
       /* Hidden sections */
       .hidden {
         display: none;
+      }
+      /* Add these to your existing styles */
+      .active-touch {
+        transform: scale(0.98) !important;
+        opacity: 0.9;
+        transition: transform 0.1s ease;
+      }
+
+      /* Larger tap targets for mobile */
+      .btn,
+      .job-card,
+      .nav-dot {
+        min-height: 44px;
+        min-width: 44px;
+      }
+
+      .nav-dot {
+        width: 20px;
+        height: 20px;
+        margin: 15px 0;
+      }
+
+      /* Form input sizing */
+      select,
+      input {
+        min-height: 44px;
+      }
+
+      /* Hide navigation dots on mobile */
+      @media (max-width: 767px) {
+        .page-nav {
+          display: none;
+        }
       }
     </style>
   </head>
@@ -1163,6 +1355,50 @@
             this.style.transform = "translateY(0) scale(1)";
           });
         });
+      });
+      // Add this to your existing script
+      document.addEventListener("DOMContentLoaded", function () {
+        // Handle touch events for job cards
+        const jobCards = document.querySelectorAll(".job-card");
+        jobCards.forEach((card) => {
+          card.addEventListener("touchstart", function () {
+            this.classList.add("active-touch");
+          });
+
+          card.addEventListener("touchend", function () {
+            this.classList.remove("active-touch");
+          });
+        });
+
+        // Prevent default on touchmove to stop scrolling issues
+        document.addEventListener(
+          "touchmove",
+          function (e) {
+            if (e.target.classList.contains("job-card")) {
+              e.preventDefault();
+            }
+          },
+          { passive: false }
+        );
+
+        // Adjust viewport for mobile devices
+        const setViewport = () => {
+          const viewport = document.querySelector('meta[name="viewport"]');
+          if (window.innerWidth <= 767) {
+            viewport.setAttribute(
+              "content",
+              "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+            );
+          } else {
+            viewport.setAttribute(
+              "content",
+              "width=device-width, initial-scale=1.0"
+            );
+          }
+        };
+
+        setViewport();
+        window.addEventListener("resize", setViewport);
       });
     </script>
   </body>
