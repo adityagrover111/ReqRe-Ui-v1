@@ -4,10 +4,63 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ReQru - Recruitment Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-      /* ======================
-      BASE STYLES
-      ====================== */
+      :root {
+  /* Modern Color Palette */
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --secondary: #0f172a;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+  --light: #f8fafc;
+  --dark: #1e293b;
+  --gray: #64748b;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-full: 9999px;
+}
+
+/* ======================
+BASE STYLES
+====================== */
+      .mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--dark);
+  padding: 8px;
+  cursor: pointer;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1001;
+  border-radius: var(--radius);
+  transition: background-color 0.2s ease;
+}
+
+.mobile-menu-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
       * {
         margin: 0;
         padding: 0;
@@ -22,19 +75,95 @@
         html {
           font-size: 14px;
         }
+        .sidebar {
+          width: 100%;
+          height: auto;
+          position: fixed;
+          bottom: 0;
+          z-index: 1000;
+          transform: translateY(100%);
+          transition: transform 0.3s ease;
+        }
+
+        .sidebar.active {
+          transform: translateY(0);
+        }
+
+        .main-content {
+          margin-left: 0;
+          width: 100%;
+          padding-bottom: 60px;
+        }
+
+        .nav-menu {
+          display: flex;
+          flex-wrap: wrap;
+          padding: 10px;
+        }
+
+        .nav-item {
+          width: 50%;
+          padding: 10px;
+          border-left: none;
+          border-bottom: 3px solid transparent;
+        }
+
+        .filter-section {
+          flex-direction: column;
+          padding: 15px;
+        }
+
+        .filter-section > div {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+
+        .table-container {
+          margin: 10px;
+          overflow-x: auto;
+        }
+
+        .table-header {
+          flex-direction: column;
+          gap: 10px;
+          padding: 15px;
+        }
+
+        .stats-container {
+          grid-template-columns: 1fr;
+          padding: 15px;
+        }
+
+        .mobile-menu-toggle {
+          display: block;
+        }
       }
 
       @media (max-width: 480px) {
         html {
           font-size: 12px;
         }
+
+        .stat-card {
+          padding: 15px;
+        }
+
+        .table-header h2 {
+          font-size: 1.5rem;
+        }
+
+        .action-btn {
+          padding: 6px 10px;
+          font-size: 0.8rem;
+        }
       }
 
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f5f6fa;
-        color: #2c3e50;
-      }
+  background-color: #f1f5f9;
+  color: var(--dark);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+}
 
       .hidden {
         display: none;
@@ -49,8 +178,8 @@
       }
 
       /* ======================
-      LAYOUT STRUCTURE
-      ====================== */
+LAYOUT STRUCTURE
+====================== */
       .container {
         display: flex;
         min-height: 100vh;
@@ -58,16 +187,18 @@
       }
 
       /* ======================
-      SIDEBAR NAVIGATION
-      ====================== */
+SIDEBAR NAVIGATION
+====================== */
       .sidebar {
-        width: 280px;
-        background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
-        color: white;
-        position: fixed;
-        height: 100vh;
-        overflow-y: auto;
-      }
+  width: 280px;
+  background: var(--secondary);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+}
 
       .logo {
         padding: 20px;
@@ -86,17 +217,20 @@
       }
 
       .nav-item {
-        padding: 12px 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border-left: 3px solid transparent;
-      }
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.75rem 1.5rem;
+  margin: 0.25rem 0.75rem;
+  border-radius: var(--radius);
+  transition: all 0.2s;
+  cursor: pointer;
+}
 
       .nav-item:hover,
-      .nav-item.active {
-        background-color: #34495e;
-        border-left-color: #3498db;
-      }
+.nav-item.active {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  border-left: none;
+}
 
       .nav-item i {
         margin-right: 10px;
@@ -104,13 +238,14 @@
       }
 
       /* ======================
-      MAIN CONTENT AREA
-      ====================== */
+MAIN CONTENT AREA
+====================== */
       .main-content {
         margin-left: 280px;
         flex: 1;
         background-color: #f8f9fa;
-        width: 100%;
+        width: calc(100% - 280px);
+        overflow-x: hidden;
       }
 
       /* Header */
@@ -148,8 +283,8 @@
       }
 
       /* ======================
-      DASHBOARD COMPONENTS
-      ====================== */
+DASHBOARD COMPONENTS
+====================== */
       .stats-container,
       .dashboard-cards {
         display: grid;
@@ -159,13 +294,19 @@
       }
 
       .card {
-        background: white;
-        border-radius: 10px;
-        padding: 25px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-        max-width: 100%;
-        width: 100%;
+  background: white;
+  border-radius: var(--radius);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  padding: 1.5rem;
+  max-width: 100%;
+  width: 100%;
+}
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
       }
 
       .card:hover {
@@ -173,11 +314,14 @@
       }
 
       .stat-card {
-        text-align: center;
-        color: white;
-        position: relative;
-        overflow: hidden;
-      }
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  color: white;
+}
 
       .stat-card::before {
         content: "";
@@ -226,8 +370,8 @@
       }
 
       /* ======================
-      TODO LIST
-      ====================== */
+TODO LIST
+====================== */
       .todo-section {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -267,17 +411,17 @@
       }
 
       /* ======================
-      TABLES & DATA GRIDS
-      ====================== */
+TABLES & DATA GRIDS - FIXED
+====================== */
       .table-container {
-        background: white;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        margin: 30px;
-        overflow-x: auto;
-        justify-content: center;
-      }
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin: 30px;
+  overflow-x: auto;
+  width: calc(100% - 60px);
+}
 
       .table-header,
       .table-controls {
@@ -315,43 +459,203 @@
         width: 100%;
         border-collapse: collapse;
         min-width: 600px;
+        table-layout: fixed;
       }
+
+      /* Specific minimum widths for different tables */
+      #job-locations table {
+        min-width: 700px;
+      }
+
+      #jobs table {
+        min-width: 1200px;
+      }
+
+      /* Job Locations Table - 6 columns */
+      #job-locations table th:nth-child(1),
+      #job-locations table td:nth-child(1) {
+        width: 5%;
+      } /* # */
+      #job-locations table th:nth-child(2),
+      #job-locations table td:nth-child(2) {
+        width: 20%;
+      } /* Country */
+      #job-locations table th:nth-child(3),
+      #job-locations table td:nth-child(3) {
+        width: 20%;
+      } /* State */
+      #job-locations table th:nth-child(4),
+      #job-locations table td:nth-child(4) {
+        width: 25%;
+      } /* City */
+      #job-locations table th:nth-child(5),
+      #job-locations table td:nth-child(5) {
+        width: 15%;
+      } /* Status */
+      #job-locations table th:nth-child(6),
+      #job-locations table td:nth-child(6) {
+        width: 15%;
+      } /* Action */
+
+      /* Jobs Table - 10 columns */
+      #jobs table th:nth-child(1),
+      #jobs table td:nth-child(1) {
+        width: 3%;
+      } /* # */
+      #jobs table th:nth-child(2),
+      #jobs table td:nth-child(2) {
+        width: 18%;
+      } /* Job Title */
+      #jobs table th:nth-child(3),
+      #jobs table td:nth-child(3) {
+        width: 12%;
+      } /* Company */
+      #jobs table th:nth-child(4),
+      #jobs table td:nth-child(4) {
+        width: 6%;
+      } /* Openings */
+      #jobs table th:nth-child(5),
+      #jobs table td:nth-child(5) {
+        width: 12%;
+      } /* Locations */
+      #jobs table th:nth-child(6),
+      #jobs table td:nth-child(6) {
+        width: 8%;
+      } /* Start Date */
+      #jobs table th:nth-child(7),
+      #jobs table td:nth-child(7) {
+        width: 10%;
+      } /* Account Manager */
+      #jobs table th:nth-child(8),
+      #jobs table td:nth-child(8) {
+        width: 12%;
+      } /* Recruiter(s) */
+      #jobs table th:nth-child(9),
+      #jobs table td:nth-child(9) {
+        width: 8%;
+      } /* Status */
+      #jobs table th:nth-child(10),
+      #jobs table td:nth-child(10) {
+        width: 11%;
+      } /* Actions */
 
       th,
       td {
-        padding: 15px;
+        padding: 12px 8px;
         text-align: left;
         border-bottom: 1px solid #dee2e6;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       th {
         background: #f8f9fa;
         font-weight: 600;
         color: #495057;
+        position: sticky;
+        top: 0;
+        z-index: 1;
       }
 
       tr:hover {
         background: #f8f9fa;
       }
 
-      .action-btn {
+      /* ======================
+ACTION BUTTONS - FIXED
+====================== */
+      .action-cell {
+        white-space: nowrap;
+        padding: 8px !important;
+      }
+
+      .btn,
+.action-btn {
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  background: var(--primary);
+  color: white;
+}
+
+      .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .action-btn.edit-btn {
         background: #007bff;
-        color: white;
-        border: none;
+      }
+
+      .action-btn.delete-btn {
+        background: #dc3545;
+      }
+
+      .action-btn:hover {
+        opacity: 0.8;
+      }
+
+      /* Job Locations Action Buttons - Simpler Layout */
+      #job-locations .action-btn {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+        margin: 0 1px;
+      }
+
+      /* Jobs Table Dropdown Actions */
+      #jobs .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      #jobs .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 140px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        right: 0;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+      }
+
+      #jobs .dropdown-content a {
+        color: #495057;
         padding: 8px 12px;
-        border-radius: 50%;
-        cursor: pointer;
-        margin: 0 5px;
+        text-decoration: none;
+        display: block;
+        font-size: 0.75rem;
+        transition: background-color 0.2s ease;
+      }
+
+      #jobs .dropdown-content a:hover {
+        background-color: #f8f9fa;
+      }
+
+      #jobs .dropdown:hover .dropdown-content {
+        display: block;
       }
 
       /* ======================
-      STATUS BADGES
-      ====================== */
+STATUS BADGES - IMPROVED
+====================== */
       .status-badge {
-        padding: 4px 12px;
-        border-radius: 15px;
-        font-size: 0.75rem;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.7rem;
         font-weight: bold;
+        display: inline-block;
+        min-width: 50px;
+        text-align: center;
       }
 
       .status-active {
@@ -365,8 +669,8 @@
       }
 
       /* ======================
-      CLIENT STATS
-      ====================== */
+CLIENT STATS
+====================== */
       .client-stats {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -408,8 +712,8 @@
       }
 
       /* ======================
-      FILTERS & CONTROLS
-      ====================== */
+FILTERS & CONTROLS
+====================== */
       .filter-section {
         background: white;
         padding: 20px;
@@ -424,9 +728,19 @@
 
       .filter-section select,
       .filter-section input {
-        padding: 8px 12px;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #dee2e6;
+        border-radius: var(--border-radius);
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+      }
+
+      .filter-section select:focus,
+      .filter-section input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.1);
+        outline: none;
       }
 
       .filter-btn {
@@ -451,8 +765,8 @@
       }
 
       /* ======================
-      DROPDOWNS & ACTIONS
-      ====================== */
+DROPDOWNS & ACTIONS
+====================== */
       .dropdown {
         position: relative;
         display: inline-block;
@@ -486,23 +800,74 @@
       }
 
       /* ======================
-      UTILITY COMPONENTS
-      ====================== */
+UTILITY COMPONENTS
+====================== */
       .sticky-notes {
         position: fixed;
         bottom: 20px;
         right: 20px;
         background: #ffc107;
         color: #212529;
-        padding: 10px 15px;
-        border-radius: 20px;
+        padding: 8px 12px;
+        border-radius: 15px;
         cursor: pointer;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        font-size: 0.8rem;
       }
 
       /* ======================
-      RESPONSIVE LAYOUT
-      ====================== */
+UTILITY CLASSES
+====================== */
+      .text-nowrap {
+        white-space: nowrap;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        flex-wrap: nowrap;
+      }
+
+      /* ======================
+RESPONSIVE LAYOUT - ENHANCED
+====================== */
+      @media (max-width: 1024px) {
+        .table-container {
+          margin: 20px;
+          width: calc(100% - 40px);
+        }
+
+        #job-locations table {
+          min-width: 600px;
+        }
+
+        #jobs table {
+          min-width: 1000px;
+        }
+
+        th,
+        td {
+          padding: 10px 6px;
+          font-size: 0.85rem;
+        }
+
+        .action-btn {
+          padding: 4px 8px;
+          font-size: 0.7rem;
+        }
+
+        #job-locations .action-btn {
+          padding: 3px 6px;
+          font-size: 0.65rem;
+        }
+      }
+
       @media (max-width: 768px) {
         .container {
           flex-direction: column;
@@ -516,6 +881,7 @@
 
         .main-content {
           margin-left: 0;
+          width: 100%;
         }
 
         .table-controls,
@@ -525,10 +891,352 @@
           align-items: flex-start;
           gap: 10px;
         }
+
+        .table-container {
+          margin: 15px;
+          width: calc(100% - 30px);
+        }
+
+        #job-locations table {
+          min-width: 500px;
+        }
+
+        #jobs table {
+          min-width: 800px;
+        }
+
+        th,
+        td {
+          padding: 8px 4px;
+          font-size: 0.8rem;
+        }
+
+        .action-btn {
+          padding: 3px 6px;
+          font-size: 0.65rem;
+          margin: 0 1px;
+        }
+
+        #job-locations .action-btn {
+          padding: 2px 4px;
+          font-size: 0.6rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .stats-container,
+        .dashboard-cards {
+          grid-template-columns: 1fr;
+          padding: 15px;
+        }
+
+        .table-container {
+          margin: 10px;
+          width: calc(100% - 20px);
+        }
+
+        .action-cell {
+          white-space: normal;
+        }
+
+        .action-btn {
+          display: block;
+          width: 100%;
+          margin: 1px 0;
+          text-align: center;
+        }
+
+        .header {
+          padding: 10px 15px;
+        }
+
+        .header h1 {
+          font-size: 1.5rem;
+        }
+      }
+
+      /* ======================
+JOB APPLICATIONS STYLES
+====================== */
+      .status-columns {
+        display: flex;
+        gap: 20px;
+        padding: 20px 30px;
+        overflow-x: auto;
+      }
+
+      .status-column {
+        min-width: 300px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .status-header {
+        padding: 15px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .status-count {
+        background: #e9ecef;
+        color: #495057;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.8rem;
+      }
+
+      .application-card {
+        padding: 15px;
+        border-bottom: 1px solid #dee2e6;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .application-card:hover {
+        background-color: #f8f9fa;
+      }
+
+      .candidate-name {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .job-title {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+      }
+
+      .application-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: #6c757d;
+      }
+
+      /* ======================
+CANDIDATE DATABASE STYLES
+====================== */
+      .candidate-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 20px 30px;
+      }
+
+      .skill-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 10px;
+      }
+
+      .skill-tag {
+        background: #e9ecef;
+        color: #495057;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+      }
+
+      /* ======================
+INTERVIEW SCHEDULE STYLES
+====================== */
+      .calendar-container {
+        padding: 20px 30px;
+      }
+
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .calendar-nav {
+        display: flex;
+        gap: 10px;
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+      }
+
+      .calendar-day-header {
+        text-align: center;
+        font-weight: bold;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 5px;
+      }
+
+      .calendar-day {
+        min-height: 100px;
+        background: white;
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .calendar-day.has-events {
+        background: #e8f4ff;
+      }
+
+      .event-indicator {
+        background: #007bff;
+        color: white;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-size: 0.8rem;
+        margin-bottom: 2px;
+      }
+
+      .interview-details {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+      }
+
+      .interview-details h3 {
+        margin-bottom: 15px;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 10px;
+      }
+
+      .interview-info-item {
+        display: flex;
+        margin-bottom: 10px;
+      }
+
+      .interview-info-label {
+        width: 120px;
+        font-weight: bold;
+        color: #495057;
+      }
+
+      /* ======================
+TEAM MANAGEMENT STYLES
+====================== */
+      .team-roles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .role-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+      }
+
+      .role-admin {
+        background: #cce5ff;
+        color: #004085;
+      }
+
+      .role-recruiter {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .role-manager {
+        background: #fff3cd;
+        color: #856404;
+      }
+
+      /* ======================
+TODOS PAGE STYLES
+====================== */
+      .todos-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 20px;
+        padding: 30px;
+      }
+
+      .todo-list {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .todo-list-header {
+        padding: 15px 20px;
+        color: white;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .todo-list-header.pending {
+        background: linear-gradient(135deg, #fd7e14, #e8590c);
+      }
+
+      .todo-list-header.completed {
+        background: linear-gradient(135deg, #28a745, #1e7e34);
+      }
+
+      .todo-item {
+        padding: 15px 20px;
+        border-bottom: 1px solid #dee2e6;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .todo-checkbox {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        border: 2px solid #ced4da;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .todo-checkbox.checked {
+        background: #28a745;
+        border-color: #28a745;
+        color: white;
+      }
+
+      .todo-text {
+        flex: 1;
+      }
+
+      .todo-date {
+        color: #6c757d;
+        font-size: 0.8rem;
+      }
+
+      .todo-actions {
+        display: flex;
+        gap: 5px;
       }
     </style>
   </head>
   <body>
+    <button class="mobile-menu-toggle" aria-label="Toggle menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
     <div class="container">
       <!-- Sidebar -->
       <div class="sidebar">
@@ -580,6 +1288,9 @@
       <div class="main-content">
         <!-- Header -->
         <div class="header">
+          <div class="mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+          </div>
           <h1 id="page-title">Dashboard</h1>
           <div class="user-info">
             <div class="user-avatar">IA</div>
@@ -943,302 +1654,1130 @@
             </table>
           </div>
         </div>
-      </div>
 
-      <!-- Job Location Section -->
-      <div id="job-locations" class="section">
-        <div class="table-container" class="job">
-          <div class="table-header">
-            <h2>Job Locations</h2>
-            <button class="create-btn">+ Create New</button>
-          </div>
-          <div class="table-controls">
-            <div>
-              Show
-              <select class="entries-select">
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-              </select>
-              entries
-            </div>
-            <div>
-              Search:
-              <input type="text" class="search-box" placeholder="Search..." />
-            </div>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Country</th>
-                <th>State</th>
-                <th>City</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>India</td>
-                <td>Telangana</td>
-                <td>Hyderabad</td>
-                <td><span class="status-badge status-active">Active</span></td>
-                <td>
-                  <button class="action-btn">✏️ Edit</button>
-                  <button class="action-btn" style="background: #dc3545">
-                    🗑️ Delete
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>India</td>
-                <td>Delhi</td>
-                <td>Delhi NCR</td>
-                <td><span class="status-badge status-active">Active</span></td>
-                <td>
-                  <button class="action-btn">✏️ Edit</button>
-                  <button class="action-btn" style="background: #dc3545">
-                    🗑️ Delete
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>India</td>
-                <td>Maharashtra</td>
-                <td>Mumbai</td>
-                <td><span class="status-badge status-active">Active</span></td>
-                <td>
-                  <button class="action-btn">✏️ Edit</button>
-                  <button class="action-btn" style="background: #dc3545">
-                    🗑️ Delete
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>USA</td>
-                <td>California</td>
-                <td>San Francisco</td>
-                <td><span class="status-badge status-active">Active</span></td>
-                <td>
-                  <button class="action-btn">✏️ Edit</button>
-                  <button class="action-btn" style="background: #dc3545">
-                    🗑️ Delete
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>Global</td>
-                <td>-</td>
-                <td>Remote</td>
-                <td><span class="status-badge status-active">Active</span></td>
-                <td>
-                  <button class="action-btn">✏️ Edit</button>
-                  <button class="action-btn" style="background: #dc3545">
-                    🗑️ Delete
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Jobs Section -->
-      <div id="jobs" class="section">
-        <!-- Stats Cards -->
-        <div class="stats-container">
-          <div class="stat-card">
-            <div class="stat-icon blue">📊</div>
-            <div>
-              <div style="font-size: 24px; font-weight: bold">501</div>
-              <div style="color: #6c757d">Total Jobs</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon green">✅</div>
-            <div>
-              <div style="font-size: 24px; font-weight: bold">480</div>
-              <div style="color: #6c757d">Active Jobs</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon red">❌</div>
-            <div>
-              <div style="font-size: 24px; font-weight: bold">21</div>
-              <div style="color: #6c757d">Inactive Jobs</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Filter Section -->
-        <div class="filter-section">
-          <div>
-            <select>
-              <option>All Companies</option>
-              <option>Reqru</option>
-              <option>TechStar Group</option>
-              <option>Careington</option>
-              <option>Citi</option>
-            </select>
-          </div>
-          <div>
-            <select>
-              <option>All Status</option>
-              <option>Active</option>
-              <option>Inactive</option>
-            </select>
-          </div>
-          <div>
-            <select>
-              <option>All Locations</option>
-              <option>Hyderabad</option>
-              <option>Delhi NCR</option>
-              <option>Mumbai</option>
-              <option>Remote</option>
-            </select>
-          </div>
-          <button class="filter-btn">Apply Filters</button>
-        </div>
-
-        <!-- Jobs Table -->
-        <div class="table-container">
-          <div class="table-header">
-            <h2>Jobs</h2>
-            <div>
-              <button class="export-btn">📊 Export to Excel</button>
+        <!-- Job Location Section -->
+        <div id="job-locations" class="section">
+          <div class="table-container">
+            <div class="table-header">
+              <h2>Job Locations</h2>
               <button class="create-btn">+ Create New</button>
             </div>
+            <div class="table-controls">
+              <div>
+                Show
+                <select class="entries-select">
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </div>
+              <div>
+                Search:
+                <input type="text" class="search-box" placeholder="Search..." />
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Country</th>
+                  <th>State</th>
+                  <th>City</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>India</td>
+                  <td>Telangana</td>
+                  <td>Hyderabad</td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                  <td>
+                    <button class="action-btn edit-btn">✏️ Edit</button>
+                    <button
+                      class="action-btn delete-btn"
+                      style="background: #dc3545"
+                    >
+                      🗑️ Delete
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>India</td>
+                  <td>Delhi</td>
+                  <td>Delhi NCR</td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                  <td>
+                    <button class="action-btn">✏️ Edit</button>
+                    <button class="action-btn" style="background: #dc3545">
+                      🗑️ Delete
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>India</td>
+                  <td>Maharashtra</td>
+                  <td>Mumbai</td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                  <td>
+                    <button class="action-btn">✏️ Edit</button>
+                    <button class="action-btn" style="background: #dc3545">
+                      🗑️ Delete
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>USA</td>
+                  <td>California</td>
+                  <td>San Francisco</td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                  <td>
+                    <button class="action-btn">✏️ Edit</button>
+                    <button class="action-btn" style="background: #dc3545">
+                      🗑️ Delete
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Global</td>
+                  <td>-</td>
+                  <td>Remote</td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                  <td>
+                    <button class="action-btn">✏️ Edit</button>
+                    <button class="action-btn" style="background: #dc3545">
+                      🗑️ Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="table-controls">
+        </div>
+
+        <!-- Jobs Section -->
+        <div id="jobs" class="section">
+          <!-- Stats Cards -->
+          <div class="stats-container">
+            <div class="stat-card">
+              <div class="stat-icon blue">📊</div>
+              <div>
+                <div style="font-size: 24px; font-weight: bold">501</div>
+                <div style="color: #6c757d">Total Jobs</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green">✅</div>
+              <div>
+                <div style="font-size: 24px; font-weight: bold">480</div>
+                <div style="color: #6c757d">Active Jobs</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon red">❌</div>
+              <div>
+                <div style="font-size: 24px; font-weight: bold">21</div>
+                <div style="color: #6c757d">Inactive Jobs</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter Section -->
+          <div class="filter-section">
             <div>
-              Show
-              <select class="entries-select">
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
+              <select>
+                <option>All Companies</option>
+                <option>Reqru</option>
+                <option>TechStar Group</option>
+                <option>Careington</option>
+                <option>Citi</option>
               </select>
-              entries
             </div>
             <div>
-              Search:
-              <input type="text" class="search-box" placeholder="Search..." />
+              <select>
+                <option>All Status</option>
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+            <div>
+              <select>
+                <option>All Locations</option>
+                <option>Hyderabad</option>
+                <option>Delhi NCR</option>
+                <option>Mumbai</option>
+                <option>Remote</option>
+              </select>
+            </div>
+            <button class="filter-btn">Apply Filters</button>
+          </div>
+
+          <!-- Jobs Table -->
+          <div class="table-container">
+            <div class="table-header">
+              <h2>Jobs</h2>
+              <div>
+                <button class="export-btn">📊 Export to Excel</button>
+                <button class="create-btn">+ Create New</button>
+              </div>
+            </div>
+            <div class="table-controls">
+              <div>
+                Show
+                <select class="entries-select">
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </div>
+              <div>
+                Search:
+                <input type="text" class="search-box" placeholder="Search..." />
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Job Title</th>
+                  <th>Company</th>
+                  <th>Openings</th>
+                  <th>Locations</th>
+                  <th>Start Date</th>
+                  <th>Account Manager</th>
+                  <th>Recruiter(s)</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Senior Software Engineer - .NET</td>
+                  <td>TechStar Group</td>
+                  <td>5</td>
+                  <td>Hyderabad, Remote</td>
+                  <td>2023-10-15</td>
+                  <td>John Doe</td>
+                  <td>Jane Smith, Mike Johnson</td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                  <td>
+                    <button class="action-btn">✏️ Edit</button>
+                    <button class="action-btn" style="background: #dc3545">🗑️ Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div> <!-- close jobs section -->
+
+        <!-- Job Applications Section (move this outside the jobs section) -->
+        <div id="job-applications" class="section">
+      <div class="filter-section">
+        <div>
+          <select>
+            <option>All Companies</option>
+            <option>Reqru</option>
+            <option>TechStar Group</option>
+            <option>Careington</option>
+            <option>Citi</option>
+          </select>
+        </div>
+        <div>
+          <select>
+            <option>All Job Titles</option>
+            <option>Senior Software Engineer - .NET</option>
+            <option>Angular Developer</option>
+            <option>Technical Program Manager</option>
+            <option>Automation Tester</option>
+          </select>
+        </div>
+        <div>
+          <select>
+            <option>All Locations</option>
+            <option>Hyderabad</option>
+            <option>Delhi NCR</option>
+            <option>Mumbai</option>
+            <option>Remote</option>
+          </select>
+        </div>
+        <div>
+          <select>
+            <option>All Skills</option>
+            <option>.Net</option>
+            <option>Angular</option>
+            <option>Automation Testing</option>
+            <option>AWS Cloud</option>
+          </select>
+        </div>
+        <div>
+          <input type="date" placeholder="From Date" />
+        </div>
+        <div>
+          <input type="date" placeholder="To Date" />
+        </div>
+        <button class="filter-btn">Apply Filters</button>
+      </div>
+
+      <div class="table-header" style="margin: 0 30px; background: white; border-radius: 10px 10px 0 0; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+        <h2>Job Applications</h2>
+        <div>
+          <button class="action-btn" style="background: #6c757d">New Status</button>
+          <button class="action-btn" style="background: #17a2b8">Mail Settings</button>
+          <button class="action-btn" style="background: #28a745">Card View</button>
+          <button class="action-btn" style="background: #007bff">Table View</button>
+        </div>
+      </div>
+
+      <!-- Application Status Columns -->
+      <div style="display: flex; gap: 20px; padding: 20px 30px; overflow-x: auto;">
+        <!-- Applied Column -->
+        <div style="min-width: 300px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+          <div style="background: #007bff; color: white; padding: 15px; border-radius: 10px 10px 0 0; font-weight: bold;">
+            Applied (25)
+          </div>
+          <div style="padding: 15px;">
+            <!-- Application Card -->
+            <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <strong>John Smith</strong>
+                <span style="color: #6c757d; font-size: 0.8rem;">2 days ago</span>
+              </div>
+              <div style="margin-bottom: 10px; font-size: 0.9rem;">
+                <div>Senior Software Engineer - .NET</div>
+                <div style="color: #6c757d;">TechStar Group</div>
+              </div>
+              <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                <span class="status-badge" style="background: #e9ecef; color: #495057;">5 years exp</span>
+                <span class="status-badge" style="background: #e9ecef; color: #495057;">Hyderabad</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <button class="action-btn" style="background: #6c757d; font-size: 0.8rem;">View</button>
+                <button class="action-btn" style="background: #28a745; font-size: 0.8rem;">Shortlist</button>
+                <button class="action-btn" style="background: #dc3545; font-size: 0.8rem;">Reject</button>
+              </div>
+            </div>
+            <!-- More Application Cards -->
+            <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <strong>Emily Johnson</strong>
+                <span style="color: #6c757d; font-size: 0.8rem;">3 days ago</span>
+              </div>
+              <div style="margin-bottom: 10px; font-size: 0.9rem;">
+                <div>Angular Developer</div>
+                <div style="color: #6c757d;">Careington</div>
+              </div>
+              <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                <span class="status-badge" style="background: #e9ecef; color: #495057;">3 years exp</span>
+                <span class="status-badge" style="background: #e9ecef; color: #495057;">Hyderabad</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <button class="action-btn" style="background: #6c757d; font-size: 0.8rem;">View</button>
+                <button class="action-btn" style="background: #28a745; font-size: 0.8rem;">Shortlist</button>
+                <button class="action-btn" style="background: #dc3545; font-size: 0.8rem;">Reject</button>
+              </div>
             </div>
           </div>
-          <table>
+        </div>
+
+        <!-- Shortlisted Column -->
+        <div style="min-width: 300px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+          <div style="background: #28a745; color: white; padding: 15px; border-radius: 10px 10px 0 0; font-weight: bold;">
+            Shortlisted (10)
+          </div>
+          <div style="padding: 15px;">
+            <!-- Application Card -->
+            <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <strong>Michael Brown</strong>
+                <span style="color: #6c757d; font-size: 0.8rem;">1 week ago</span>
+              </div>
+              <div style="margin-bottom: 10px; font-size: 0.9rem;">
+                <div>Technical Program Manager</div>
+                <div style="color: #6c757d;">Citi</div>
+              </div>
+              <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                <span class="status-badge" style="background: #e9ecef; color: #495057;">8 years exp</span>
+                <span class="status-badge" style="background: #e9ecef; color: #495057;">Mumbai</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <button class="action-btn" style="background: #6c757d; font-size: 0.8rem;">View</button>
+                <button class="action-btn" style="background: #17a2b8; font-size: 0.8rem;">Interview</button>
+                <button class="action-btn" style="background: #dc3545; font-size: 0.8rem;">Reject</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interview Column -->
+        <div style="min-width: 300px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+          <div style="background: #17a2b8; color: white; padding: 15px; border-radius: 10px 10px 0 0; font-weight: bold;">
+            Interview (5)
+          </div>
+          <div style="padding: 15px;">
+            <!-- Application Card -->
+            <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <strong>Sarah Wilson</strong>
+                <span style="color: #6c757d; font-size: 0.8rem;">5 days ago</span>
+              </div>
+              <div style="margin-bottom: 10px; font-size: 0.9rem;">
+                <div>Automation Tester</div>
+                <div style="color: #6c757d;">TechStar Group</div>
+              </div>
+              <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                <span class="status-badge" style="background: #e9ecef; color: #495057;">4 years exp</span>
+                <span class="status-badge" style="background: #e9ecef; color: #495057;">Delhi NCR</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <button class="action-btn" style="background: #6c757d; font-size: 0.8rem;">View</button>
+                <button class="action-btn" style="background: #ffc107; font-size: 0.8rem;">Offer</button>
+                <button class="action-btn" style="background: #dc3545; font-size: 0.8rem;">Reject</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Offer Column -->
+        <div style="min-width: 300px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+          <div style="background: #ffc107; color: #212529; padding: 15px; border-radius: 10px 10px 0 0; font-weight: bold;">
+            Offer (2)
+          </div>
+          <div style="padding: 15px; text-align: center; color: #6c757d;">
+            No candidates in this stage
+          </div>
+        </div>
+
+        <!-- Hired Column -->
+        <div style="min-width: 300px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+          <div style="background: #343a40; color: white; padding: 15px; border-radius: 10px 10px 0 0; font-weight: bold;">
+            Hired (0)
+          </div>
+          <div style="padding: 15px; text-align: center; color: #6c757d;">
+            No candidates in this stage
+          </div>
+        </div>
+
+        <!-- Rejected Column -->
+        <div style="min-width: 300px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+          <div style="background: #dc3545; color: white; padding: 15px; border-radius: 10px 10px 0 0; font-weight: bold;">
+            Rejected (8)
+          </div>
+          <div style="padding: 15px;">
+            <!-- Application Card -->
+            <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <strong>David Lee</strong>
+                <span style="color: #6c757d; font-size: 0.8rem;">1 week ago</span>
+              </div>
+              <div style="margin-bottom: 10px; font-size: 0.9rem;">
+                <div>Senior Software Engineer - .NET</div>
+                <div style="color: #6c757d;">TechStar Group</div>
+              </div>
+              <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                <span class="status-badge" style="background: #e9ecef; color: #495057;">2 years exp</span>
+                <span class="status-badge" style="background: #e9ecef; color: #495057;">Hyderabad</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <button class="action-btn" style="background: #6c757d; font-size: 0.8rem;">View</button>
+                <button class="action-btn" style="background: #28a745; font-size: 0.8rem;">Reconsider</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Candidate Database Section -->
+    <div id="candidate-database" class="section">
+      <div class="filter-section">
+        <div>
+          <input type="text" placeholder="Search by skills (e.g., PHP, Java)" style="width: 250px;" />
+        </div>
+        <div>
+          <input type="text" placeholder="Search by name, email, phone, city" style="width: 250px;" />
+        </div>
+        <button class="filter-btn">Search</button>
+        <button class="export-btn" style="margin-left: auto;">📊 Export to Excel</button>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Candidate Database</h2>
+          <button class="create-btn">+ Add Candidate</button>
+        </div>
+        <div class="table-controls">
+          <div>
+            Show
+            <select class="entries-select">
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+            entries
+          </div>
+          <div>
+            Search:
+            <input type="text" class="search-box" placeholder="Search..." />
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>City</th>
+              <th>Skills</th>
+              <th>Experience</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>John Smith</td>
+              <td>john.smith@example.com</td>
+              <td>+91 9876543210</td>
+              <td>Hyderabad</td>
+              <td>.Net, AWS Cloud</td>
+              <td>5 years</td>
+              <td>
+                <button class="action-btn" style="background: #6c757d">🔍</button>
+                <button class="action-btn">✏️</button>
+                <button class="action-btn" style="background: #dc3545">🗑️</button>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Emily Johnson</td>
+              <td>emily.j@example.com</td>
+              <td>+91 9876543211</td>
+              <td>Hyderabad</td>
+              <td>Angular, React</td>
+              <td>3 years</td>
+              <td>
+                <button class="action-btn" style="background: #6c757d">🔍</button>
+                <button class="action-btn">✏️</button>
+                <button class="action-btn" style="background: #dc3545">🗑️</button>
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Michael Brown</td>
+              <td>michael.b@example.com</td>
+              <td>+91 9876543212</td>
+              <td>Mumbai</td>
+              <td>Project Management, Agile</td>
+              <td>8 years</td>
+              <td>
+                <button class="action-btn" style="background: #6c757d">🔍</button>
+                <button class="action-btn">✏️</button>
+                <button class="action-btn" style="background: #dc3545">🗑️</button>
+              </td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Sarah Wilson</td>
+              <td>sarah.w@example.com</td>
+              <td>+91 9876543213</td>
+              <td>Delhi NCR</td>
+              <td>Automation Testing, Selenium</td>
+              <td>4 years</td>
+              <td>
+                <button class="action-btn" style="background: #6c757d">🔍</button>
+                <button class="action-btn">✏️</button>
+                <button class="action-btn" style="background: #dc3545">🗑️</button>
+              </td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>David Lee</td>
+              <td>david.l@example.com</td>
+              <td>+91 9876543214</td>
+              <td>Hyderabad</td>
+              <td>.Net, C#</td>
+              <td>2 years</td>
+              <td>
+                <button class="action-btn" style="background: #6c757d">🔍</button>
+                <button class="action-btn">✏️</button>
+                <button class="action-btn" style="background: #dc3545">🗑️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Candidate Onboard Section -->
+    <div id="candidate-onboard" class="section">
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Candidate Onboarding</h2>
+          <button class="create-btn">+ Add New</button>
+        </div>
+        <div class="table-controls">
+          <div>
+            Show
+            <select class="entries-select">
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+            entries
+          </div>
+          <div>
+            Search:
+            <input type="text" class="search-box" placeholder="Search..." />
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Candidate</th>
+              <th>Job Title</th>
+              <th>Company</th>
+              <th>Joining Date</th>
+              <th>Documents</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Michael Brown</td>
+              <td>Technical Program Manager</td>
+              <td>Citi</td>
+              <td>2023-12-15</td>
+              <td><span class="status-badge" style="background: #ffc107; color: #212529;">Pending</span></td>
+              <td><span class="status-badge status-active">In Progress</span></td>
+              <td>
+                <button class="action-btn" style="background: #6c757d">🔍</button>
+                <button class="action-btn">✏️</button>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Sarah Wilson</td>
+              <td>Automation Tester</td>
+              <td>TechStar Group</td>
+              <td>2023-12-01</td>
+              <td><span class="status-badge" style="background: #28a745; color: white;">Complete</span></td>
+              <td><span class="status-badge status-active">In Progress</span></td>
+              <td>
+                <button class="action-btn" style="background: #6c757d">🔍</button>
+                <button class="action-btn">✏️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Job Onboard Section -->
+    <div id="job-onboard" class="section">
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Job Onboarding</h2>
+          <button class="create-btn">+ Add New</button>
+        </div>
+        <div class="table-controls">
+          <div>
+            Show
+            <select class="entries-select">
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+            entries
+          </div>
+          <div>
+            Search:
+            <input type="text" class="search-box" placeholder="Search..." />
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Job Title</th>
+              <th>Company</th>
+              <th>Start Date</th>
+              <th>Requirements</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Senior Software Engineer - .NET</td>
+              <td>TechStar Group</td>
+              <td>2023-10-15</td>
+              <td><span class="status-badge" style="background: #28a745; color: white;">Complete</span></td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td>
+                <button class="action-btn" style="background: #6c757d">🔍</button>
+                <button class="action-btn">✏️</button>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Angular Developer</td>
+              <td>Careington</td>
+              <td>2023-11-01</td>
+              <td><span class="status-badge" style="background: #28a745; color: white;">Complete</span></td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td>
+                <button class="action-btn" style="background: #6c757d">🔍</button>
+                <button class="action-btn">✏️</button>
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Technical Program Manager</td>
+              <td>Citi</td>
+              <td>2023-09-20</td>
+              <td><span class="status-badge" style="background: #28a745; color: white;">Complete</span></td>
+              <td><span class="status-badge status-inactive">Inactive</span></td>
+              <td>
+                <button class="action-btn" style="background: #6c757d">🔍</button>
+                <button class="action-btn">✏️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Interview Schedule Section -->
+    <div id="interview-schedule" class="section">
+      <div class="filter-section">
+        <div>
+          <select>
+            <option>All Candidates</option>
+            <option>John Smith</option>
+            <option>Emily Johnson</option>
+            <option>Michael Brown</option>
+            <option>Sarah Wilson</option>
+          </select>
+        </div>
+        <div>
+          <select>
+            <option>All Interviewers</option>
+            <option>Admin</option>
+            <option>Velpula Maggi</option>
+            <option>Shraddha</option>
+          </select>
+        </div>
+        <div>
+          <input type="date" placeholder="From Date" />
+        </div>
+        <div>
+          <input type="date" placeholder="To Date" />
+        </div>
+        <button class="filter-btn">Apply Filters</button>
+        <button class="action-btn" style="background: #28a745; margin-left: auto;">Table View</button>
+      </div>
+
+      <div style="display: flex; gap: 30px; padding: 20px 30px;">
+        <!-- Calendar View -->
+        <div style="flex: 2; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); padding: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <button class="action-btn">◀</button>
+            <h3>November 2023</h3>
+            <button class="action-btn">▶</button>
+          </div>
+          <table style="width: 100%; border-collapse: collapse;">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Job Title</th>
-                <th>Company</th>
-                <th>Openings</th>
-                <th>Locations</th>
-                <th>Start Date</th>
-                <th>Account Manager</th>
-                <th>Recruiter(s)</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th style="padding: 10px; text-align: center;">Sun</th>
+                <th style="padding: 10px; text-align: center;">Mon</th>
+                <th style="padding: 10px; text-align: center;">Tue</th>
+                <th style="padding: 10px; text-align: center;">Wed</th>
+                <th style="padding: 10px; text-align: center;">Thu</th>
+                <th style="padding: 10px; text-align: center;">Fri</th>
+                <th style="padding: 10px; text-align: center;">Sat</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>1</td>
-                <td>Senior Software Engineer - .NET</td>
-                <td>TechStar Group</td>
-                <td>5</td>
-                <td>Hyderabad, Remote</td>
-                <td>2023-10-15</td>
-                <td>Admin</td>
-                <td>Recruiter 1, Recruiter 2</td>
-                <td><span class="status-badge status-active">Active</span></td>
-                <td>
-                  <div class="dropdown">
-                    <button class="action-btn">⚙️ Actions</button>
-                    <div class="dropdown-content">
-                      <a href="#">📋 Copy URL</a>
-                      <a href="#">⎘ Duplicate Job</a>
-                      <a href="#">✏️ Edit</a>
-                      <a href="#">🗑️ Remove</a>
-                    </div>
-                  </div>
-                </td>
+                <td style="padding: 10px; text-align: center; color: #ccc;">29</td>
+                <td style="padding: 10px; text-align: center; color: #ccc;">30</td>
+                <td style="padding: 10px; text-align: center; color: #ccc;">31</td>
+                <td style="padding: 10px; text-align: center;">1</td>
+                <td style="padding: 10px; text-align: center;">2</td>
+                <td style="padding: 10px; text-align: center;">3</td>
+                <td style="padding: 10px; text-align: center;">4</td>
               </tr>
               <tr>
-                <td>2</td>
-                <td>Angular Developer</td>
-                <td>Careington</td>
-                <td>3</td>
-                <td>Hyderabad</td>
-                <td>2023-11-01</td>
-                <td>Velpula Maggi</td>
-                <td>Recruiter 3</td>
-                <td><span class="status-badge status-active">Active</span></td>
-                <td>
-                  <div class="dropdown">
-                    <button class="action-btn">⚙️ Actions</button>
-                    <div class="dropdown-content">
-                      <a href="#">📋 Copy URL</a>
-                      <a href="#">⎘ Duplicate Job</a>
-                      <a href="#">✏️ Edit</a>
-                      <a href="#">🗑️ Remove</a>
-                    </div>
-                  </div>
-                </td>
+                <td style="padding: 10px; text-align: center;">5</td>
+                <td style="padding: 10px; text-align: center;">6</td>
+                <td style="padding: 10px; text-align: center;">7</td>
+                <td style="padding: 10px; text-align: center;">8</td>
+                <td style="padding: 10px; text-align: center;">9</td>
+                <td style="padding: 10px; text-align: center;">10</td>
+                <td style="padding: 10px; text-align: center;">11</td>
               </tr>
               <tr>
-                <td>3</td>
-                <td>Technical Program Manager</td>
-                <td>Citi</td>
-                <td>2</td>
-                <td>Mumbai</td>
-                <td>2023-09-20</td>
-                <td>Shraddha</td>
-                <td>Recruiter 4</td>
-                <td>
-                  <span class="status-badge status-inactive">Inactive</span>
-                </td>
-                <td>
-                  <div class="dropdown">
-                    <button class="action-btn">⚙️ Actions</button>
-                    <div class="dropdown-content">
-                      <a href="#">📋 Copy URL</a>
-                      <a href="#">⎘ Duplicate Job</a>
-                      <a href="#">✏️ Edit</a>
-                      <a href="#">🗑️ Remove</a>
-                    </div>
-                  </div>
-                </td>
+                <td style="padding: 10px; text-align: center;">12</td>
+                <td style="padding: 10px; text-align: center;">13</td>
+                <td style="padding: 10px; text-align: center;">14</td>
+                <td style="padding: 10px; text-align: center; background-color: #007bff; color: white; border-radius: 50%;">15</td>
+                <td style="padding: 10px; text-align: center;">16</td>
+                <td style="padding: 10px; text-align: center;">17</td>
+                <td style="padding: 10px; text-align: center;">18</td>
               </tr>
               <tr>
-                <td>4</td>
-                <td>Automation Tester</td>
-                <td>TechStar Group</td>
-                <td>4</td>
-                <td>Delhi NCR, Remote</td>
-                <td>2023-12-01</td>
-                <td>Admin</td>
-                <td>Recruiter 2</td>
-                <td><span class="status-badge status-active">Active</span></td>
-                <td>
-                  <div class="dropdown">
-                    <button class="action-btn">⚙️ Actions</button>
-                    <div class="dropdown-content">
-                      <a href="#">📋 Copy URL</a>
-                      <a href="#">⎘ Duplicate Job</a>
-                      <a href="#">✏️ Edit</a>
-                      <a href="#">🗑️ Remove</a>
-                    </div>
-                  </div>
-                </td>
+                <td style="padding: 10px; text-align: center;">19</td>
+                <td style="padding: 10px; text-align: center;">20</td>
+                <td style="padding: 10px; text-align: center; background-color: #28a745; color: white; border-radius: 50%;">21</td>
+                <td style="padding: 10px; text-align: center;">22</td>
+                <td style="padding: 10px; text-align: center;">23</td>
+                <td style="padding: 10px; text-align: center;">24</td>
+                <td style="padding: 10px; text-align: center;">25</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; text-align: center;">26</td>
+                <td style="padding: 10px; text-align: center;">27</td>
+                <td style="padding: 10px; text-align: center;">28</td>
+                <td style="padding: 10px; text-align: center;">29</td>
+                <td style="padding: 10px; text-align: center;">30</td>
+                <td style="padding: 10px; text-align: center; color: #ccc;">1</td>
+                <td style="padding: 10px; text-align: center; color: #ccc;">2</td>
               </tr>
             </tbody>
           </table>
+          <div style="margin-top: 20px;">
+            <button class="create-btn">+ Add Interview Schedule</button>
+          </div>
         </div>
+
+        <!-- Upcoming Interview Details -->
+        <div style="flex: 1; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); padding: 20px;">
+          <h3 style="margin-bottom: 20px;">Upcoming Interview</h3>
+          <div style="border-left: 4px solid #007bff; padding-left: 15px; margin-bottom: 20px;">
+            <div style="font-weight: bold; font-size: 1.1rem;">Sarah Wilson</div>
+            <div style="color: #6c757d; margin-bottom: 10px;">Automation Tester</div>
+            <div style="margin-bottom: 5px;"><strong>Interviewer:</strong> Admin</div>
+            <div style="margin-bottom: 5px;"><strong>Date:</strong> Nov 15, 2023</div>
+            <div style="margin-bottom: 5px;"><strong>Time:</strong> 10:30 AM</div>
+            <div style="margin-bottom: 5px;"><strong>Notes:</strong> Technical round interview</div>
+          </div>
+          <div style="border-left: 4px solid #28a745; padding-left: 15px;">
+            <div style="font-weight: bold; font-size: 1.1rem;">Michael Brown</div>
+            <div style="color: #6c757d; margin-bottom: 10px;">Technical Program Manager</div>
+            <div style="margin-bottom: 5px;"><strong>Interviewer:</strong> Shraddha</div>
+            <div style="margin-bottom: 5px;"><strong>Date:</strong> Nov 21, 2023</div>
+            <div style="margin-bottom: 5px;"><strong>Time:</strong> 2:00 PM</div>
+            <div style="margin-bottom: 5px;"><strong>Notes:</strong> Final round with hiring manager</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Section -->
+    <div id="team" class="section">
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Team</h2>
+          <button class="create-btn">+ Add Team Member</button>
+        </div>
+        <div class="table-controls">
+          <div>
+            Show
+            <select class="entries-select">
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+            entries
+          </div>
+          <div>
+            Search:
+            <input type="text" class="search-box" placeholder="Search..." />
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Admin</td>
+              <td>admin@reqru.in</td>
+              <td>
+                <select style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px;">
+                  <option selected>Administrator</option>
+                  <option>Recruiter</option>
+                  <option>Account Manager</option>
+                </select>
+              </td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td>
+                <button class="action-btn">✏️</button>
+                <button class="action-btn" style="background: #dc3545">🗑️</button>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Velpula Maggi</td>
+              <td>maggi@reqru.in</td>
+              <td>
+                <select style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px;">
+                  <option>Administrator</option>
+                  <option>Recruiter</option>
+                  <option selected>Account Manager</option>
+                </select>
+              </td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td>
+                <button class="action-btn">✏️</button>
+                <button class="action-btn" style="background: #dc3545">🗑️</button>
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Shraddha</td>
+              <td>shraddha@reqru.in</td>
+              <td>
+                <select style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px;">
+                  <option>Administrator</option>
+                  <option>Recruiter</option>
+                  <option selected>Account Manager</option>
+                </select>
+              </td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td>
+                <button class="action-btn">✏️</button>
+                <button class="action-btn" style="background: #dc3545">🗑️</button>
+              </td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Recruiter 1</td>
+              <td>recruiter1@reqru.in</td>
+              <td>
+                <select style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px;">
+                  <option>Administrator</option>
+                  <option selected>Recruiter</option>
+                  <option>Account Manager</option>
+                </select>
+              </td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td>
+                <button class="action-btn">✏️</button>
+                <button class="action-btn" style="background: #dc3545">🗑️</button>
+              </td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Recruiter 2</td>
+              <td>recruiter2@reqru.in</td>
+              <td>
+                <select style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px;">
+                  <option>Administrator</option>
+                  <option selected>Recruiter</option>
+                  <option>Account Manager</option>
+                </select>
+              </td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td>
+                <button class="action-btn">✏️</button>
+                <button class="action-btn" style="background: #dc3545">🗑️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Report Section -->
+    <div id="report" class="section">
+      <div class="filter-section">
+        <div>
+          <select>
+            <option>All Companies</option>
+            <option>Reqru</option>
+            <option>TechStar Group</option>
+            <option>Careington</option>
+            <option>Citi</option>
+          </select>
+        </div>
+        <div>
+          <select>
+            <option>All Authors</option>
+            <option>Admin</option>
+            <option>Velpula Maggi</option>
+            <option>Shraddha</option>
+          </select>
+        </div>
+        <div>
+          <input type="date" placeholder="From Date" />
+        </div>
+        <div>
+          <input type="date" placeholder="To Date" />
+        </div>
+        <button class="filter-btn">Apply Filters</button>
+      </div>
+
+      <!-- Dashboard Cards -->
+      <div class="dashboard-cards">
+        <div class="card stat-card card-dark">
+          <div class="stat-number">6410</div>
+          <div class="stat-label">Total Applications</div>
+        </div>
+        <div class="card stat-card card-teal">
+          <div class="stat-number">485</div>
+          <div class="stat-label">Jobs Posted</div>
+        </div>
+        <div class="card stat-card card-green">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Candidates Hired</div>
+        </div>
+        <div class="card stat-card card-blue">
+          <div class="stat-number">5</div>
+          <div class="stat-label">Interviews Scheduled</div>
+        </div>
+      </div>
+
+      <!-- Application Status Table -->
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Application Status</h2>
+          <button class="export-btn">📊 Export to Excel</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Count</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Applied</td>
+              <td>4352</td>
+              <td>67.9%</td>
+            </tr>
+            <tr>
+              <td>Shortlisted</td>
+              <td>1650</td>
+              <td>25.7%</td>
+            </tr>
+            <tr>
+              <td>Interview</td>
+              <td>17</td>
+              <td>0.3%</td>
+            </tr>
+            <tr>
+              <td>Offer</td>
+              <td>0</td>
+              <td>0.0%</td>
+            </tr>
+            <tr>
+              <td>Hired</td>
+              <td>0</td>
+              <td>0.0%</td>
+            </tr>
+            <tr>
+              <td>Rejected</td>
+              <td>391</td>
+              <td>6.1%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Performance Report -->
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Performance Report</h2>
+          <div>
+            <select style="padding: 8px; border: 1px solid #ced4da; border-radius: 4px; margin-right: 10px;">
+              <option>Month-wise</option>
+              <option>Recruiter-wise</option>
+              <option>Status-wise</option>
+            </select>
+            <button class="export-btn">📊 Export to Excel</button>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Total Jobs</th>
+              <th>Total Applications</th>
+              <th>Shortlisted</th>
+              <th>Interviews</th>
+              <th>Offers</th>
+              <th>Hired</th>
+              <th>Rejected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>TechStar Group</td>
+              <td>250</td>
+              <td>3500</td>
+              <td>950</td>
+              <td>12</td>
+              <td>0</td>
+              <td>0</td>
+              <td>210</td>
+            </tr>
+            <tr>
+              <td>Careington</td>
+              <td>150</td>
+              <td>1800</td>
+              <td>450</td>
+              <td>3</td>
+              <td>0</td>
+              <td>0</td>
+              <td>120</td>
+            </tr>
+            <tr>
+              <td>Citi</td>
+              <td>100</td>
+              <td>1100</td>
+              <td>250</td>
+              <td>2</td>
+              <td>0</td>
+              <td>0</td>
+              <td>61</td>
+            </tr>
+            <tr>
+              <td>Reqru</td>
+              <td>1</td>
+              <td>10</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -1411,5 +2950,22 @@
         });
       });
     </script>
+    <script>
+      const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+      const sidebar = document.querySelector('.sidebar');
+
+      mobileMenuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle('active');
+      });
+
+      // Close sidebar when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+          sidebar.classList.remove('active');
+        }
+      });
+    </script>
   </body>
 </html>
+
